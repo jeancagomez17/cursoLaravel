@@ -15,7 +15,14 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        // $products =  Product::where('idCategory'); //Metodo para traer todos los registros
+        $products = Product::all();
+
+
+        // $products = Product::with('catgeories')->get(); Traer la informacion relacionada con esa tabla
+        return response()->json([
+            'products' => $products
+        ]);
     }
 
     /**
@@ -37,6 +44,24 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         //
+        try{
+            return $request->validate([
+                'name',
+                'desc',
+                'value'
+            ]);
+
+            $product = Product::create([
+                'name' => $request->name,
+                'desc' => $request->desc,
+                'value' => $request->value
+            ]);
+            
+        }catch(\Exception $e){
+            return response()->json([
+                'msg' => $e->getMessage(),
+            ]);
+        }
     }
 
     /**
@@ -45,9 +70,12 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show($id)
     {
-        //
+        $product = Product::find($id);
+        return response()->json([
+            'products' => $product
+        ]);
     }
 
     /**
@@ -68,7 +96,7 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, $id)
     {
         //
     }
