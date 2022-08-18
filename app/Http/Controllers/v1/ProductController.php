@@ -45,17 +45,22 @@ class ProductController extends Controller
     {
         //
         try{
-            return $request->validate([
-                'name',
+             $request->validate([
+                'name' => 'required',
                 'desc',
-                'value'
+                'value',
+                'stock',
+                'idCategory'
             ]);
 
             $product = Product::create([
                 'name' => $request->name,
                 'desc' => $request->desc,
-                'value' => $request->value
+                'value' => $request->value,
+                'stock' => $request->stock,
+                'idCategory' => $request->idCategory
             ]);
+
             
         }catch(\Exception $e){
             return response()->json([
